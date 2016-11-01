@@ -15,7 +15,14 @@ public class CameraControl : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        currentAngle += Input.GetAxis("Horizontal") * speed * Time.deltaTime;
+        if (Input.GetKey(KeyCode.LeftArrow))
+        {
+            currentAngle -= speed * Time.deltaTime;
+        }
+        else if (Input.GetKey(KeyCode.RightArrow))
+        {
+            currentAngle += speed * Time.deltaTime;
+        }
         Quaternion q = Quaternion.Euler(25, currentAngle, 0);
         Vector3 direction = q * Vector3.forward;
         transform.position = target.position - direction * distance;

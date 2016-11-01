@@ -3,11 +3,12 @@ using System.Collections;
 
 public class BallController : MonoBehaviour {
 
+    public Transform target;
     public float force = 50;
     public float speed;
-    public float turnSpeed;
     public Rigidbody ball;
-    private bool space;
+    private Vector3 forceDir;
+    private bool space = false;
 
 	// Use this for initialization
 	void Start () {
@@ -16,21 +17,16 @@ public class BallController : MonoBehaviour {
 
     void Update()
     {
-        if (Input.GetKey(KeyCode.LeftArrow))
-        {
-            transform.Rotate(Vector3.up, -turnSpeed * Time.deltaTime);
-        }
-        if (Input.GetKey(KeyCode.RightArrow))
-        {
-            transform.Rotate(Vector3.up, turnSpeed * Time.deltaTime);
-        }
+        
     }
 
     // Update is called once per frame
     void FixedUpdate() {
         force += Input.GetAxis("Vertical") * speed * Time.deltaTime;
         if (Input.GetKeyDown("space") && ball.velocity.magnitude < .5f) {
-            ball.AddForce(transform.forward * force, ForceMode.Impulse);
+            forceDir = Vector3.ProjectOnPlane(target.forward, Vector3.up);
+            forceDir.Normalize();
+            ball.AddForce(forceDir * force, ForceMode.Impulse);
             space = true;
         }
         if (space = true && ball.velocity.magnitude < .5f)
