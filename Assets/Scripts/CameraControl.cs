@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class CameraControl : MonoBehaviour {
+public class CameraControl : MonoBehaviour
+{
 
     public Transform target;
     public float speed;
@@ -9,12 +10,14 @@ public class CameraControl : MonoBehaviour {
     private float currentAngle = 0;
 
     // Use this for initialization
-    void Start () {
-	
-	}
-	
-	// Update is called once per frame
-	void Update () {
+    void Start()
+    {
+
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
         if (Input.GetKey(KeyCode.LeftArrow))
         {
             currentAngle -= speed * Time.deltaTime;
