@@ -5,26 +5,31 @@ using System.Collections;
 public class BallController : MonoBehaviour
 {
 
+    static public  float MAX_FORCE = 60;
     public Transform target;
-    public float force = 50;
+    public float force;
     public float speed;
     public Rigidbody ball;
     public Slider power;
-    public Text WinText;
+    public Text shotText;
+    private int shots;
     private Vector3 forceDir;
-    private bool space;
+    private bool space = false;
 
     // Use this for initialization
     void Start()
     {
         space = false;
-        WinText.text = "";
+        shotText.text = "";
+        shots = 0;
     }
 
     void Update()
     {
         force += Input.GetAxis("Vertical") * speed * Time.deltaTime;
+        force = Mathf.Clamp(force, 0, MAX_FORCE);
         power.value = force;
+        shotText.text = shots + " Shots";
     }
 
     // Update is called once per frame
@@ -35,21 +40,15 @@ public class BallController : MonoBehaviour
             forceDir = Vector3.ProjectOnPlane(target.forward, Vector3.up);
             forceDir.Normalize();
             ball.AddForce(forceDir * force, ForceMode.Impulse);
+            shots++;
             space = true;
+            Debug.Log("Starting");
         }
         if (space = true && ball.velocity.magnitude < .6f)
         {
             ball.velocity = new Vector3(0, 0, 0);
             space = false;
-        }
-    }
-
-    void OnTriggerEnter(Collider other)
-    {
-        if (other.gameObject.CompareTag("Finish"))
-        {
-            other.gameObject.SetActive(false);
-            WinText.text = "YOU WIN!";
+            Debug.Log("Stopping");
         }
     }
 }
